@@ -1,0 +1,68 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "Modbus/1.0.0": {
+        "dependencies": {
+          "CommonHelpers": "1.0.0",
+          "NLog": "4.6.8",
+          "NModbus": "3.0.58"
+        },
+        "runtime": {
+          "Modbus.dll": {}
+        }
+      },
+      "NLog/4.6.8": {
+        "runtime": {
+          "lib/netstandard2.0/NLog.dll": {
+            "assemblyVersion": "4.0.0.0",
+            "fileVersion": "4.6.8.10751"
+          }
+        }
+      },
+      "NModbus/3.0.58": {
+        "runtime": {
+          "lib/netstandard2.0/NModbus.dll": {
+            "assemblyVersion": "3.0.58.0",
+            "fileVersion": "3.0.58.0"
+          }
+        }
+      },
+      "CommonHelpers/1.0.0": {
+        "runtime": {
+          "CommonHelpers.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Modbus/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "NLog/4.6.8": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-LKB0uN5naOTxdNz++iapk6arNYv2asE8FPRBAmQZ1fe8y8C1Zm6sldh/w9TP/w5s7FGK8s0x6ny0og5ytFK1oQ==",
+      "path": "nlog/4.6.8",
+      "hashPath": "nlog.4.6.8.nupkg.sha512"
+    },
+    "NModbus/3.0.58": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-dDiG/wrnLJR8SdVmxnSjmaAgTMRpcvl5NmqX1taGkiAuSjQDwdOJWSZHvaBDqScCRlSpSg9PR7+L/3C7JUj87w==",
+      "path": "nmodbus/3.0.58",
+      "hashPath": "nmodbus.3.0.58.nupkg.sha512"
+    },
+    "CommonHelpers/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

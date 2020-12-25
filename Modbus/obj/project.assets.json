@@ -1,0 +1,84 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "CommonHelpers/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "compile": {
+          "bin/placeholder/CommonHelpers.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/CommonHelpers.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "CommonHelpers/1.0.0": {
+      "type": "project",
+      "path": "../CommonHelpers/CommonHelpers.csproj",
+      "msbuildProject": "../CommonHelpers/CommonHelpers.csproj"
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.1": [
+      "CommonHelpers >= 1.0.0"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\olegall\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restoreSettings": {
+      "hideWarningsAndErrors": true
+    },
+    "restore": {
+      "projectUniqueName": "D:\\Работа\\Компании\\AxialRad\\PBLService\\PBLService\\Modbus\\Modbus.csproj",
+      "projectName": "Modbus",
+      "projectPath": "D:\\Работа\\Компании\\AxialRad\\PBLService\\PBLService\\Modbus\\Modbus.csproj",
+      "packagesPath": "C:\\Users\\olegall\\.nuget\\packages\\",
+      "outputPath": "D:\\Работа\\Компании\\AxialRad\\PBLService\\PBLService\\Modbus\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\olegall\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.1"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "projectReferences": {
+            "D:\\Работа\\Компании\\AxialRad\\PBLService\\PBLService\\CommonHelpers\\CommonHelpers.csproj": {
+              "projectPath": "D:\\Работа\\Компании\\AxialRad\\PBLService\\PBLService\\CommonHelpers\\CommonHelpers.csproj"
+            }
+          }
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.1": {
+        "imports": [
+          "net461"
+        ],
+        "assetTargetFallback": true,
+        "warn": true
+      }
+    }
+  }
+}

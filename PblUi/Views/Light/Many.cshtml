@@ -1,0 +1,166 @@
+﻿@{
+    ViewData["Title"] = "Конфигурирование множества ламп";
+    string controller = "Light";
+}
+
+@model PblUi.Models.LightVM;
+<div class="text-center">
+    <h1 class="display-4">Редактирование ламп</h1>
+</div>
+<hr>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<div class="container">
+    @using (Html.BeginForm("ShowUpdateMany", @controller, FormMethod.Post, new { @class = "update-form" }))
+    {
+    <div class="row">
+        <div style="width: 14px;"></div>
+        <label class="controller-caption col">Адрес контроллера</label>
+        <label class="col">Адрес</label>
+        <label class="col">Номер</label>
+        <label class="col">Цвет</label>
+    </div>
+        @foreach (var l in Model.Lights)
+        {
+            <div class="row">
+                <input type="hidden" name="id" value="">
+                <input type="checkbox" name="checked" value="false" id="@l.Id">
+                
+                @foreach (PblDAL.Models.Controller c in Model.Controllers)
+                {
+                    if (c.Id == l.ControllerId)
+                    {
+                        <input type="hidden" name="controllerId" value="@l.ControllerId">
+                        <p class="controller-caption col">@c.Address</p>
+                        break;
+                    }
+                }
+                <input type="hidden" name="address" value="@l.Address">
+                <p class="col">@string.Format("0x{0:x2}", l.Address)</p>
+
+                <p class="col">@l.Num</p>
+
+                @foreach (PblDAL.Models.Color col in Model.Colors)
+                {
+                    if (col.Id == l.ColorId)
+                    {
+                        <p class="col">@col.ColorName</p>
+                        break;
+                    }
+                }
+            </div>
+        }
+        <hr>
+        <div class="row">
+            <select class="form-control col-sm-2 choose-action" name="num">
+                <option value="ShowUpdateMany" selected>Редактировать</option>
+                <option value="DeleteMany">Удалить</option>
+            </select>
+            <button type="submit" class="btn btn-info add-btn col-sm-1 action-btn glyphicon glyphicon-arrow-right" disabled></button>
+        </div>
+    }
+    <br><br>
+    <div class="text-center">
+        <h1 class="display-4">Добавить лампы</h1>
+    </div>
+    <hr>
+    @using (Html.BeginForm("CreateMany", @controller, FormMethod.Post, new { @class = "row create-form" }))
+    {
+        <p class="col-sm-1 caption">Контр-р</p>
+        <select class="form-control col-sm" name="controllerId">
+            @foreach (PblDAL.Models.Controller c in Model.Controllers)
+            {
+                <option value="@c.Id">@c.Address</option>
+            }
+        </select>
+
+        <p class="col-sm-1 caption">Адр Min</p>
+        <select class="form-control col-sm addr" name="addressMin">
+            @foreach (int addr in Model.Addrs)
+            {
+                <option value="@addr">@string.Format("0x{0:x2}", @addr)</option>
+            }
+        </select>
+
+        <p class="col-sm-1 caption">Адр Max</p>
+        <select class="form-control col-sm addr" name="addressMax">
+            @foreach (int addr in Model.Addrs)
+            {
+                <option value="@addr">@string.Format("0x{0:x2}", @addr)</option>
+            }
+        </select>
+
+        <p class="col-sm-1 caption">Цвет</p>
+        <select class="form-control col-sm" name="colorId">
+            @foreach (PblDAL.Models.Color col in Model.Colors)
+            {
+                <option value="@col.Id">@col.ColorName</option>
+            }
+        </select>
+        <button type="submit" class="btn btn-info btn-sm add-btn">Заполнить</button>
+    }
+</div>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+
+<script>
+    let checkboxes = $('input[type="checkbox"]');
+    $(document).ready(function () {
+        clearCheckboxes();
+    });
+
+    checkboxes.click(function () {
+        let hiddenId = $(this).parent().find('input[name="id"]');
+        if ($(this).prop('checked')) {
+            let id = $(this).attr('id');
+            hiddenId.attr('value', id);
+        } else {
+            hiddenId.attr('value', '');
+        }
+        toggleActionBtn();
+    });
+
+    function clearCheckboxes() {
+        checkboxes.prop('checked', false);
+    }
+
+    function toggleActionBtn() {
+        let isAnyCheckboxChecked = checkboxes.toArray().some(x => x.checked === true);
+        $('.action-btn').prop('disabled', !isAnyCheckboxChecked);
+    }
+
+    $('.choose-action').change(function () {
+        let action = $(this).find(':selected').val();
+        $('.update-form').attr('action', '/@controller/'+action);
+    });
+</script>
+
+<style>
+    .save-btn, .add-btn, .delete-btn {
+        height: 30px;
+        margin-left: 10px;
+    }
+
+    .save-btn {
+       margin-right: 10px;
+    }
+
+    .action-btn {
+        padding: 0;
+    }
+
+    .controller-caption {
+        margin-left: 20px;
+    }
+
+    .create-form .caption {
+        text-align: right;
+        margin-top: 6px;
+    }
+    .update-form {
+        width: 98%;
+    }
+
+    .row {
+        height: 35px;
+    }
+</style>

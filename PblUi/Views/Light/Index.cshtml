@@ -1,0 +1,202 @@
+﻿@{
+    ViewData["Title"] = "Лампы";
+    string controller = "Light";
+    int lowAddr = Model.Addrs.Min();
+    int highAddr = Model.Addrs.Max();
+}
+
+@model PblUi.Models.LightVM;
+<div class="text-center">
+    <h1 class="display-4">Лампы</h1>
+</div>
+<hr>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<div class="container">
+    @foreach (var l in Model.Lights)
+    {
+        <div class="row">
+            @using (Html.BeginForm("Update", @controller, FormMethod.Post, new { @class = "row update-form" }))
+            {
+                <input type="hidden" name="id" value="@l.Id">
+
+                <p class="caption">Контр-р</p>
+                <select class="form-control col-sm" name="controllerId">
+                    @foreach (PblDAL.Models.Controller c in Model.Controllers)
+                    {
+                        if (c.Id == l.ControllerId)
+                        {
+                            <option value="@c.Id" selected>@c.Address</option>
+                        }
+                        else
+                        {
+                            <option value="@c.Id">@c.Address</option>
+                        }
+                    }
+                </select>
+
+                <p class="caption">Адрес</p>
+                <select class="form-control col-sm addr" name="address">
+                    @foreach (int addr in Model.Addrs)
+                    {
+                        if (addr == l.Address)
+                        {
+                            <option value="@addr" selected>@string.Format("0x{0:x2}", @addr) </option>
+                        }
+                        else
+                        {
+                            <option value="@addr">@string.Format("0x{0:x2}", @addr)</option>
+                        }
+                    }
+                </select>
+
+                <p class="caption">№ лампы</p>
+                <select class="form-control col-sm num" name="num">
+                    @for (int num = 1; num <= Model.ModuleNums.Last.Max; num++)
+                    {
+                        if (l.Address == @lowAddr && num == Model.ModuleNums.Last.Min)
+                        {
+                            break;
+                        }
+
+                        if (l.Address != @lowAddr && l.Address % 2 != 0 && num >= Model.ModuleNums.Last.Min)
+                        {
+                            continue;
+                        }
+
+                        if (l.Address != @lowAddr && l.Address % 2 == 0 && num < Model.ModuleNums.Last.Min)
+                        {
+                            continue;
+                        }
+
+                        if (num == l.Num)
+                        {
+                            <option value="@num" selected>@num</option>
+                        }
+                        else
+                        {
+                            <option value="@num">@num</option>
+                        }
+                    }
+                </select>
+
+                <p class="caption">Цвет</p>
+                <select class="form-control col-sm" name="colorId">
+                    @foreach (PblDAL.Models.Color col in Model.Colors)
+                    {
+                        if (col.Id == l.ColorId)
+                        {
+                            <option value="@col.Id" selected>@col.ColorName</option>
+                        }
+                        else
+                        {
+                            <option value="@col.Id">@col.ColorName</option>
+                        }
+                    }
+                </select>
+                <button type="submit" class="btn btn-info btn-sm save-btn">Сохранить</button>
+            }
+            <button type="submit" class="btn btn-default btn-sm glyphicon glyphicon-remove delete-btn" onclick="location.href='@controller/Delete?id=@l.Id'"></button>
+        </div>
+    }
+    <hr>
+    @using (Html.BeginForm("Create", @controller, FormMethod.Post, new { @class = "row create-form" }))
+    {
+        <p class="caption">Контр-р</p>
+        <select class="form-control col-sm" name="controllerId">
+            @foreach (PblDAL.Models.Controller c in Model.Controllers)
+            {
+                <option value="@c.Id">@c.Address</option>
+            }
+        </select>
+
+        <p class="caption">Адрес</p>
+        <select class="form-control col-sm addr" name="address">
+            @foreach (int addr in Model.Addrs)
+            {
+                <option value="@addr">@string.Format("0x{0:x2}", @addr)</option>
+            }
+        </select>
+
+        <p class="caption">Номер</p>
+        <select class="form-control col-sm num" name="num">
+            @for (int num = 1; num <= Model.ModuleNums.Last.Max; num++)
+            {
+                if (num == Model.ModuleNums.Last.Min)
+                {
+                    break;
+                }
+                <option value="@num">@num</option>
+            }
+        </select>
+
+        <p class="caption">Цвет</p>
+        <select class="form-control col-sm" name="colorId">
+            @foreach (PblDAL.Models.Color col in Model.Colors)
+            {
+                <option value="@col.Id">@col.ColorName</option>
+            }
+        </select>
+        <button type="submit" class="btn btn-info btn-sm add-btn">Добавить</button>
+    }
+</div>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+    let moduleFirstNums = { min: @Model.ModuleNums.First.Min, max: @Model.ModuleNums.First.Max };
+    let moduleLastNums = { min: @Model.ModuleNums.Last.Min, max: @Model.ModuleNums.Last.Max };
+
+    $(document).ready(function () {
+        $('.addr').change(function () {
+            const addr = parseInt($(this).val());
+            const nums = getNums(addr);
+            const numSelect = $(this).parent().find('.num');
+            populateSelect(numSelect, nums);
+        });
+    });
+
+    function populateSelect(select, nums) {
+        const options = [];
+        for (let i = nums.min; i <= nums.max; i++) {
+            options.push('<option value="'+i+'">'+i+'</option>');
+        }
+        select.html(options.join(''));
+    }
+
+    function getNums(addr) {
+        if (addr === @lowAddr || addr === @lowAddr + 1)
+            return moduleFirstNums;
+
+        if (addr > @lowAddr + 1 && addr <= @highAddr) {
+            if (addr % 2 === 0)
+                return moduleLastNums;
+            else
+                return moduleFirstNums;
+        }
+    }
+</script>
+
+<style>
+    .save-btn, .add-btn, .delete-btn {
+        height: 30px;
+        margin-left: 10px;
+    }
+
+    .save-btn {
+       margin-right: 10px;
+    }
+
+    .caption {
+        height: 35px;
+        line-height: 35px;
+        margin: 0 5px 0 20px;
+    }
+
+    .create-form .caption:first-child {
+        margin-left: 5px;
+    }
+
+    .update-form {
+        width: 98%;
+    }
+</style>

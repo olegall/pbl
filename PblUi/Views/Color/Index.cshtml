@@ -1,0 +1,64 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+    string contrName = "Color";
+}
+
+@model IEnumerable<PblDAL.Models.Color>;
+<div class="text-center">
+    <h1 class="display-4">Цвета ламп</h1>
+</div>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<table class="table">
+    <thead>
+        <tr>
+            <th>Цвет</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var m in Model)
+        {
+            <tr>
+                <td>
+                    @using (Html.BeginForm("Update", contrName, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <input type="hidden" name="Id" value="@m.Id" />
+                        <input class="form-control ip" type="text" name="colorName" value="@m.ColorName">
+                        <button class="btn btn-default btn-sm glyphicon glyphicon-floppy-disk save" type="submit"></button>
+                    }
+                </td>
+                <td>
+                    <button type="submit" class="btn btn-default btn-sm glyphicon glyphicon-remove" onclick="location.href='@contrName/Delete?id=@m.Id'"></button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<button type="submit" class="btn btn-default btn-sm create" onclick="location.href='@contrName/Create'">Добавить</button>
+
+<style>
+    .ip {
+        display: inline-block;
+        width: 135px;
+        background: #f3f3f3;
+        margin-right: 10px;
+        border: none;		
+    }
+
+    .table {
+        width: 250px;
+        margin: 0 auto;
+        margin-bottom: 10px;
+    }
+
+    .create {
+        display: block;
+        width: 200px;
+        margin: 0 auto;
+    }
+
+    .glyphicon-remove {
+        margin-top: 3px;
+    }
+</style>

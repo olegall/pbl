@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Редактирование множества ламп";
+    string controller = "Light";
+}
+
+@model PblUi.Models.UpdateMany;
+<div class="text-center">
+    <h1 class="display-4">Редактирование ламп</h1>
+</div>
+<hr>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+<div class="container">
+    @using (Html.BeginForm("UpdateMany", @controller, FormMethod.Post))
+    {
+        <div class="row">
+            <input type="hidden" name="oldAddress" value="@Model.OldAddress">
+            <input type="hidden" name="controllerId" value="@Model.ControllerId.First()">
+            @foreach (string id in Model.Id)
+            {
+                <input type="hidden" name="id" value="@id">
+            }
+
+            <p class="col-sm-1">Адрес</p>
+            <select class="form-control col-sm-2" name="address">
+                <option value="@null">Не менять</option>
+                @for (int addr = Model.AddrLow; addr <= Model.AddrHigh; addr++)
+                {
+                    <option value="@addr">@string.Format("0x{0:x2}", @addr)</option>
+                }
+            </select>
+
+            <p class="col-sm-1">Цвет</p>
+            <select class="form-control col-sm-2" name="colorId">
+                <option value="@null">Не менять</option>
+                @foreach (var c in Model.Colors)
+                {
+                    <option value="@c.Id">@c.ColorName</option>
+                }
+            </select>
+            <button type="submit" class="btn btn-info btn-sm" disabled>Редактироваить</button>
+        </div>
+    }
+</div>
+
+<style>
+    p {
+        margin-top: 5px;
+        text-align: right;
+    }
+
+    button {
+        margin-left: 50px;
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+<script>
+    $('select').change(function () {
+        let isAnyOptionChosen = $('select').toArray().some(x => x.value);
+        $('button').prop('disabled', !isAnyOptionChosen);
+    });
+</script>
